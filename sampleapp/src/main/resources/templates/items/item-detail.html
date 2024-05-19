@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Item Detail</title>
+</head>
+<body>
+    <h2>Item Detail</h2>
+    <p>ID: <span th:text="${item.id}">1</span></p>
+    <p>Name: <span th:text="${item.name}">Name</span></p>
+    <p>Price: <span th:text="${item.price}">Price</span></p>
+    <a href="/items">Back to Item List</a>
+    <a th:href="@{/items/{id}/update(id=${item.id})}">Update Item</a>
+    <a th:href="@{/items/{id}/delete(id=${item.id})}">Delete Item</a>
+</body>
+</html>

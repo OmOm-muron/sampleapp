@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Employee</title>
+</head>
+<body>
+    <h2>Update Employee</h2>
+    <form th:action="|/employees/${id}/update|" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <input type="hidden" th:value="${employee.id}" name="id">
+        <label for="name">Name:</label><br>
+        <input type="text" id="username" name="username" th:value="${employee.username}" required><br>
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password" th:value="${employee.password}" required><br>
+        <input type="submit" value="Update">
+    </form>
+</body>
+</html>

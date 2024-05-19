@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Supplier Detail</title>
+</head>
+<body>
+    <h2>Supplier Detail</h2>
+    <p>ID: <span th:text="${supplier.id}">1</span></p>
+    <p>Name: <span th:text="${supplier.name}"></span></p>
+    <p>Address: <span th:text="${supplier.address}"></span></p>
+    <a href="/suppliers">Back to Supplier List</a>
+    <a th:href="@{/suppliers/{id}/update(id=${supplier.id})}">Update Supplier</a>
+    <a th:href="@{/suppliers/{id}/delete(id=${supplier.id})}">Delete Supplier</a>
+</body>
+</html>

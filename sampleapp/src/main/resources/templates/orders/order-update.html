@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Order</title>
+</head>
+<body>
+    <h2>Update Order</h2>
+    <form th:action="|/orders/${id}/update|" th:object="${order}" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <input type="hidden" th:value="${order.orderId}" name="id">
+        <label for="supplier">Supplier:</label><br>
+        <select id="supplier" name="supplier" required>
+            <option th:each="supplier : ${suppliers}" th:value="${supplier.id}" th:text="${supplier.name}" th:selected="${supplier.id == order.supplierId}? 'true'">Supplier Name</option>
+        </select><br>
+        <label for="date">Date:</label><br>
+        <input type="date" id="date" name="date" th:value="${order.orderDate}" required><br>
+        <br>
+        <table>
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="orderDetail, iterStat: *{orderDtls}">
+                    <td>
+                        <select th:field="*{orderDtls[__${iterStat.index}__].itemId}">
+                            <option value="-1">select item</option>
+                            <option th:each="item : ${items}" th:value="${item.id}" th:text="${item.name}" th:selected="${item.id == orderDetail.itemId}? 'true'">Item Name</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="number" th:field="*{orderDtls[__${iterStat.index}__].quantity}">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <input type="submit" value="Update Order">
+        <br>
+        <a th:href="@{/orders/{id}(id=${order.orderId})}">Back toDetail</a>
+    </form>
+</body>
+</html>

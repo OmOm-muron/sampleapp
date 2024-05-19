@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Item List</title>
+</head>
+<body>
+    <h2>Item List</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="item : ${items}">
+                <td><a th:href="@{/items/{id}(id=${item.id})}" th:text="${item.id}"></a></td>
+                <td th:text="${item.name}">Item Name</td>
+                <td th:text="${item.price}">Item Price</td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <a href="/items/add">Add New Item</a>
+    <br>
+    <a href="/">Back to Index</a>
+</body>
+</html>

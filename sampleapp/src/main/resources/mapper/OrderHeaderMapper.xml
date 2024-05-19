@@ -1,0 +1,79 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+          "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sampleapp.mapper.OrderHeaderMapper">
+    <!-- ここにDTOの定義が必要だねぇ -->
+    <resultMap id="SupplierResultMap" type="sampleapp.entity.Supplier">
+        <id property="id" column="supplier_id"/>
+        <result property="name" column="supplier_name"/>
+        <result property="address" column="address"/>
+    </resultMap>
+    <resultMap id="OrderHdrDTOResultMap" type="sampleapp.dto.OrderHdrDTO">
+        <id property="orderId" column="order_id"/>
+        <result property="orderDate" column="order_date"/>
+        <result property="supplierId" column="supplier_id"/>
+        <association property="supplier" column="supplier_id" javaType="sampleapp.entity.Supplier" resultMap="SupplierResultMap" />
+    </resultMap>
+    <resultMap id="OrderDTOResultMap" type="sampleapp.dto.OrderDTO">
+        <id property="orderId" column="order_id"/>
+        <result property="orderDate" column="order_date"/>
+        <result property="supplierId" column="supplier_id"/>
+        <collection property="orderDtls" ofType="sampleapp.entity.OrderDetail">
+            <id property="id" column="order_detail_id"/>
+            <result property="orderId" column="order_id"/>
+            <result property="itemId" column="item_id"/>
+            <result property="quantity" column="quantity"/>
+        </collection>
+    </resultMap>
+    <resultMap id="OrderHeaderResultMap" type="sampleapp.entity.OrderHeader">
+        <id property="id" column="id"/>
+        <result property="orderDate" column="order_date"/>
+        <result property="supplierId" column="supplier_id"/>
+    </resultMap>
+
+    <select id="getLatestOrder" resultMap="OrderHeaderResultMap">
+        SELECT order_header.*
+        FROM order_header
+        ORDER BY order_header.id DESC
+        LIMIT 1
+    </select>
+    
+    <select id="getAllOrderHeaders" resultMap="OrderHdrDTOResultMap">
+        SELECT order_header.id AS order_id, order_header.order_date, order_header.supplier_id,
+        supplier.name AS supplier_name, supplier.address
+        FROM order_header
+        INNER JOIN supplier ON supplier.id = order_header.supplier_id
+        ORDER BY order_header.id
+    </select>
+
+    <select id="getOrderHeaderById" resultMap="OrderHdrDTOResultMap" parameterType="int">
+        SELECT order_header.id AS order_id, order_header.order_date, order_header.supplier_id,
+        supplier.name AS supplier_name, supplier.address
+        FROM order_header
+        INNER JOIN supplier ON supplier.id = order_header.supplier_id
+        WHERE order_header.id = #{id}
+    </select>
+    
+    <select id="getOrderById" resultMap="OrderDTOResultMap" parameterType="int">
+        SELECT order_header.id AS order_id, order_header.order_date, order_header.supplier_id,
+        order_detail.id AS order_detail_id, order_detail.item_id, order_detail.quantity
+        FROM order_header
+        INNER JOIN order_detail ON order_detail.order_id = order_header.id
+        WHERE order_header.id = #{id}
+    </select>
+
+    <insert id="addOrderHeader" parameterType="sampleapp.entity.OrderHeader" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO order_header (order_date, supplier_id)
+        VALUES (#{orderDate}, #{supplierId})
+    </insert>
+
+    <update id="updateOrderHeader" parameterType="sampleapp.entity.OrderHeader">
+        UPDATE order_header
+        SET order_date = #{orderDate}, supplier_id = #{supplierId}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteOrderHeader" parameterType="int">
+        DELETE FROM order_header WHERE id = #{id}
+    </delete>
+
+</mapper>

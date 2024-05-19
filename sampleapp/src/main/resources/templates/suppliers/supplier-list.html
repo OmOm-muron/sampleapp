@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Supplier List</title>
+</head>
+<body>
+    <h2>Supplier List</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Address</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="supplier : ${suppliers}">
+                <td><a th:href="@{/suppliers/{id}(id=${supplier.id})}" th:text="${supplier.id}"></a></td>
+                <td th:text="${supplier.name}"></td>
+                <td th:text="${supplier.address}"></td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <a href="/suppliers/add">Add New Supplier</a>
+    <br>
+    <a href="/">Back to Index</a>
+</body>
+</html>

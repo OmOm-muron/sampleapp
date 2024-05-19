@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create New Order</title>
+</head>
+<body>
+    <h2>Create New Order</h2>
+    <form action="/orders/add" th:object="${order}" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <label for="supplierId">Supplier:</label><br>
+        <select id="supplierId" name="supplierId" required>
+            <option th:each="supplier : ${suppliers}" th:value="${supplier.id}" th:text="${supplier.name}">Supplier Name</option>
+        </select><br>
+        <label for="orderDate">Date:</label><br>
+        <input type="date" id="orderDate" name="orderDate" required><br>
+        <br>
+        <table>
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="orderDetail, iterStat: *{orderDtls}">
+                    <td>
+                        <select th:field="*{orderDtls[__${iterStat.index}__].itemId}">
+                            <option value="-1">select item</option>
+                            <option th:each="item : ${items}" th:value="${item.id}" th:text="${item.name}">Item Name</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="number" th:field="*{orderDtls[__${iterStat.index}__].quantity}">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <input type="submit" value="Create Order">
+    </form>
+    <br>
+    <a href="/orders">Back to Order List</a>
+</body>
+</html>

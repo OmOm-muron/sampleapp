@@ -1,0 +1,35 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+          "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sampleapp.mapper.ItemMapper">
+
+    <resultMap id="ItemResultMap" type="sampleapp.entity.Item">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="price" column="price"/>
+    </resultMap>
+
+    <select id="getAllItems" resultMap="ItemResultMap">
+        SELECT * FROM item
+        ORDER BY id
+    </select>
+
+    <select id="getItemById" resultMap="ItemResultMap" parameterType="int">
+        SELECT * FROM item WHERE id = #{id}
+    </select>
+
+    <insert id="addItem" parameterType="sampleapp.entity.Item" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO item (name, price)
+        VALUES (#{name}, #{price})
+    </insert>
+
+    <update id="updateItem" parameterType="sampleapp.entity.Item">
+        UPDATE item
+        SET name = #{name}, price = #{price}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteItem" parameterType="int">
+        DELETE FROM item WHERE id = #{id}
+    </delete>
+
+</mapper>

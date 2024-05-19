@@ -1,0 +1,35 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+          "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sampleapp.mapper.SupplierMapper">
+
+    <resultMap id="SupplierResultMap" type="sampleapp.entity.Supplier">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="address" column="address"/>
+    </resultMap>
+
+    <select id="getAllSuppliers" resultMap="SupplierResultMap">
+        SELECT * FROM supplier
+        ORDER BY id
+    </select>
+
+    <select id="getSupplierById" resultMap="SupplierResultMap" parameterType="int">
+        SELECT * FROM supplier WHERE id = #{id}
+    </select>
+
+    <insert id="addSupplier" parameterType="sampleapp.entity.Supplier" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO supplier (name, address)
+        VALUES (#{name}, #{address})
+    </insert>
+
+    <update id="updateSupplier" parameterType="sampleapp.entity.Supplier">
+        UPDATE supplier
+        SET name = #{name}, address = #{address}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteSupplier" parameterType="int">
+        DELETE FROM supplier WHERE id = #{id}
+    </delete>
+
+</mapper>

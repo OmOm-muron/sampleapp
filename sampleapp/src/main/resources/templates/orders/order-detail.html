@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Detail</title>
+</head>
+<body>
+    <h2>Order Detail</h2>
+    <p>ID: <span th:text="${orderHdr.orderId}">1</span></p>
+    <p>Supplier: <span th:text="${orderHdr.supplier.name}">Supplier Name</span></p>
+    <p>Date: <span th:text="${orderHdr.orderDate}">Order Date</span></p>
+    
+    <table>
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="orderDetail, iterStat: *{orderDtls}">
+                    <td th:text="${orderDtls[__${iterStat.index}__].item.name}">
+                    </td>
+                    <td th:text="${orderDtls[__${iterStat.index}__].item.price}">
+                    </td>
+                    <td th:text="${orderDtls[__${iterStat.index}__].quantity}">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    
+    <a href="/orders">Back to Order List</a>
+    <a th:href="@{/orders/{id}/update(id=${orderHdr.orderId})}">Update Order</a>
+    <a th:href="@{/orders/{id}/delete(id=${orderHdr.orderId})}">Delete Order</a>
+</body>
+</html>

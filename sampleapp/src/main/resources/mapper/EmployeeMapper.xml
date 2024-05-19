@@ -1,0 +1,39 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+          "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sampleapp.mapper.EmployeeMapper">
+
+    <resultMap id="EmployeeResultMap" type="sampleapp.entity.Employee">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+    </resultMap>
+
+    <select id="getAllEmployees" resultMap="EmployeeResultMap">
+        SELECT * FROM employee
+        ORDER BY id
+    </select>
+
+    <select id="getEmployeeById" resultMap="EmployeeResultMap" parameterType="int">
+        SELECT * FROM employee WHERE id = #{id}
+    </select>
+    
+    <select id="getEmployeeByName" resultMap="EmployeeResultMap" parameterType="String">
+        SELECT * FROM employee WHERE username = #{username}
+    </select>
+
+    <insert id="addEmployee" parameterType="sampleapp.entity.Employee" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO employee (username, password)
+        VALUES (#{username}, #{password})
+    </insert>
+
+    <update id="updateEmployee" parameterType="sampleapp.entity.Employee">
+        UPDATE employee
+        SET username = #{username}, password = #{password}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteEmployee" parameterType="int">
+        DELETE FROM employee WHERE id = #{id}
+    </delete>
+
+</mapper>
